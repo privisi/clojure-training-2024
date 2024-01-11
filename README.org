@@ -34,7 +34,7 @@ me to review your code and merge it back into the main repo.  Thus,
 you'll be able to view your colleague's solutions after I merge your
 answers back into the main repo.
 
-*REVIEWING ALAIN'S SOLUTIONS*
+*REVIEWING SOLUTIONS*
 
 After the lessons, I will place my solutions in [[file:src/assignments/alain/][this directory]]. You
 can peruse them at your leisure and compare against the code
@@ -91,7 +91,7 @@ We are going to make extensive use of the following:
 
  - The excellent online book: [[https://www.braveclojure.com/clojure-for-the-brave-and-true/][Clojure for the Brave and True]]
  - The [[https://github.com/functional-koans/clojure-koans][clojure koans]]
- - Many of the excellent at [[http://www.4clojure.com/problems][4clojure sample problems]]
+ - Many of the excellent at [[https://4clojure.oxal.org/][4clojure sample problems]]
  - In lessons 7 and 8, we will make use of [[TODO][this simple server]] playground. (TODO)
  - In lessons 9 and 10, we will study [[TODO][a bit of reagent]] (TODO).
  - In lessons 11 and 12, we will build our own version of the [[https://www.nytimes.com/puzzles/spelling-bee][New York Times Spelling Bee]].
