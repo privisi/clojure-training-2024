@@ -81,18 +81,16 @@ actually use Lisp itself a lot.”
  - see if you can bring up the Koans in the development environment of your choice.
 
 * Lesson Plan
- - [ ] Previous to the lesson, send them email about the lesson plan.
- - [ ] They will have had to install java, clojure, an IDE (or emacs)
- - [ ] We're going to start with =clojure=, and only get to =clojurescript= later.
- - [ ] They should install the [[https://github.com/functional-koans/clojure-koans][clojure koans]]
+ - [X] They will have had to install java, clojure, an IDE (or emacs)
+ - [X] We're going to start with =clojure=, and only get to =clojurescript= later.
+ - [X] They should install the [[https://github.com/functional-koans/clojure-koans][clojure koans]]
      I want them to to a git pull, follow the instructions and successfully
      get "lein koan run" to work, proving their environment works.
      Read the README of  [[https://github.com/functional-koans/clojure-koans][clojure koans]], and try to get the first 2 or 3 tests to pass
      (they should be pretty obvious).
- - [ ] They will have had to read Chapters 1 and 3 (and 2, if they choose emacs)
+ - [X] They will have had to read Chapters 1 and 3 (and 2, if they choose emacs)
        In Chap 3, read up to (but not including) the "Pulling it all together" section
- - [ ] Review their installations; make sure they can launch a REPL in an editor
- - [ ] write some trivial code; say, perhaps, the interview problems? :-P
- - [ ] Show problems in [[file:work/training/lesson_01.clj][file:~/Consulting/clients/gojee/work/training/lesson_01.clj]]
- - [ ] explain about paredit and structural editing.  Lisp forms are trees.
+ - [X] Review their installations; make sure they can launch a REPL in an editor
+ - [X] write some trivial code; say, perhaps, the interview problems? :-P
+ - [X] explain about paredit and structural editing.  Lisp forms are trees.
  - [ ] indentation.  M-q or equivalent.  Lisp programmers don't "see" the parentheses.
