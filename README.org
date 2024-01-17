@@ -49,11 +49,11 @@ questions arise, /etc./)
 
 * Material we plan to get through, eventually
 
- - [ ] how to get help
- - [ ] navigate sources
- - [ ] structural editing
- - [ ] using maps
- - [ ] gotchas with =conj=
+ - [X] how to get help
+ - [X] navigate sources
+ - [X] structural editing
+ - [X] using maps
+ - [X] gotchas with =conj=
  - [ ] destructuring
  - [ ] sequences, lazy seqs
  - [ ] lexical vs dynamic scoping
@@ -126,7 +126,7 @@ These will be added in over time as lessons are completed.
 
 ** Lesson 2
    These are the assignment problems following Lesson 2.
-   We will discuss your solutions and see Alain's solutions
+   We will discuss your solutions and see my solutions
    at the beginning of [[file:doc/lesson-03.org::*Lesson%20Goals][Lesson 3]].
 
    1. Implement your own version of =filter= using a loop form, then using reduce.
