@@ -1,9 +1,9 @@
 * Lesson Goals
 
- - [ ] destructuring
- - [ ] sequences, lazy seqs
- - [ ] lexical vs dynamic scoping
- - [ ] reduce, functional idioms
+ - [X] destructuring
+ - [X] sequences, lazy seqs
+ - [X] lexical vs dynamic scoping
+ - [X] reduce, functional idioms
 
 * Preparatory Material for Lesson 2
 

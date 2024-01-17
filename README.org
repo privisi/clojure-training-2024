@@ -54,10 +54,10 @@ questions arise, /etc./)
  - [X] structural editing
  - [X] using maps
  - [X] gotchas with =conj=
- - [ ] destructuring
- - [ ] sequences, lazy seqs
- - [ ] lexical vs dynamic scoping
- - [ ] reduce, functional idioms
+ - [X] destructuring
+ - [X] sequences, lazy seqs
+ - [X] lexical vs dynamic scoping
+ - [X] reduce, functional idioms
  - [ ] tracing, debugging
  - [ ] writing tests
  - [ ] Introduction to =leiningen=, dependency management,
