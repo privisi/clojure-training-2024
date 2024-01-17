@@ -109,7 +109,7 @@ We are going to make extensive use of the following:
 Newer lesson plans will be added in as lessons are completed.
   - [[file:doc/lesson-01.org::*Introductory%20email][Lesson 1]] :: intro
   - [[file:doc/lesson-02.org::*Lesson%20Goals][Lesson 2]] :: Functional Programming
-  - Lesson 3 :: More functional programming
+  - [[file:doc/lesson-03.org::*Lesson%20Goals][Lesson 3]] :: More functional programming
   - Lesson 4 :: References and identities, threads
   - Lesson 5 :: Java interop, namespaces, i/o
   - Lesson 6 :: Clojure odds and ends
@@ -123,6 +123,8 @@ Newer lesson plans will be added in as lessons are completed.
 
 * Assignments
 These will be added in over time as lessons are completed.
+Assignment answers should be committed in src/assignments/YOUR_NAME/assignmentXX.clj in your forked branch
+Pull this branch separately, and merge it into your source branch, commit, and raise a pull request to the main branch.
 
 ** Lesson 2
    These are the assignment problems following Lesson 2.
