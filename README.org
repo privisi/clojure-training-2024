@@ -149,7 +149,8 @@ Pull this branch separately, and merge it into your source branch, commit, and r
       Can you see why clojure has =atoms= and =refs=, and immutable values,
       as its programming model?
 
-   3. Try to solve the [[https://4clojure.oxal.org/#/problem/178][best poker hand]] problem.  This will require you
+   3. Try to solve the [[https://web.archive.org/web/20200701030903/http://www.4clojure.com/problem/178][best poker hand]]
+      problem (The original is down so we will use an archived version).  This will require you
       to first solve problem 128, [[https://4clojure.oxal.org/#/problem/128][recognizing poker hands]].
       This is an excercise is structuring and factoring your code
       as cleanly as possible; pay close attention to your representation
