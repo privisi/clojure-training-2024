@@ -146,6 +146,12 @@
 ;; not lazy
 (type (filter-with-reduce odd? [1 2 3 4 5 6 7])) ;; clojure.lang.PersistentList
 
+;; test it
+(assert true) ; won't error
+(assert false) ; will throw assertion error
+(assert (= (filter-with-reduce odd? [1 2 3])
+           '(1 3)))
+
 ;; How do we do it the lazy way?
 
 (defn our-lazy-filter [pred coll]
@@ -159,6 +165,7 @@
 
 ;; this is lazy, it's returning the instructions
 (type (our-lazy-filter odd? [1 2 3 4 5 6 7])) ;; clojure.lang.Cons
+
 
 
 
