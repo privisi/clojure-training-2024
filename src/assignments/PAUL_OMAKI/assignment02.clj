@@ -112,6 +112,7 @@
 
 (defn find-anagram-sets [set-name]
   (group-by sort-string (map (fn [x] (identity x)) set-name)))
+
 (defn find-anagrams-in-set [set-name]
   (set (filter #(> (count %) 1) (vals (find-anagram-sets set-name)))))
 
@@ -143,12 +144,12 @@
 (defn safe-<= [a b]
   (if (and (not (nil? a)) (not (nil? b)))
     (<= a b)
-    "nil"))
+    true))
 
 (defn safe-> [a b]
   (if (and (not (nil? a)) (not (nil? b)))
     (> a b)
-    "nil"))
+    true))
 
 (defn return-blank-if-count-less-than [num output]
   (if (< num (count output)) output []))
@@ -163,7 +164,6 @@
           last-in-collection (last collected)]
          (cond                                            ;; if nothing is remaining, return the best one
            (= nil (seq remaining)) (return-blank-if-count-less-than 1 (return-item-with-highest-count prev-best collected)) ;; return value, disqualify if less than 2 items in max sequence
-
            (safe-> number-to-check last-in-collection) (recur  ;; if next number in sequence is higher
                                                    (return-item-with-highest-count prev-best collected) ;; make our previous best into a mirror of the higher of the 2 counts
                                                    (rest remaining)
@@ -189,3 +189,5 @@
 
 
 (< (count (return-item-with-highest-count [4] [5])) 2)
+
+
