@@ -59,8 +59,8 @@ questions arise, /etc./)
  - [X] lexical vs dynamic scoping
  - [X] reduce, functional idioms
  - [ ] tracing, debugging
- - [ ] writing tests
- - [ ] Introduction to =leiningen=, dependency management,
+ - [X] writing tests
+ - [X] Introduction to =leiningen=, dependency management,
        and finding and using libraries in clojure.
  - [ ] The philosophical underpinning of state handling in clojure
  - [ ] vars, atoms, refs, agents
@@ -110,7 +110,7 @@ Newer lesson plans will be added in as lessons are completed.
   - [[file:doc/lesson-01.org::*Introductory%20email][Lesson 1]] :: intro
   - [[file:doc/lesson-02.org::*Lesson%20Goals][Lesson 2]] :: Functional Programming
   - [[file:doc/lesson-03.org::*Lesson%20Goals][Lesson 3]] :: More functional programming
-  - Lesson 4 :: References and identities, threads
+  - [[file:doc/lesson-04.org::*Lesson%20Goals][Lesson 4]] :: References and identities, threads
   - Lesson 5 :: Java interop, namespaces, i/o
   - Lesson 6 :: Clojure odds and ends
   - Lesson 7 :: Building a simple HTTP service - Guess the right number!
@@ -137,6 +137,39 @@ Pull this branch separately, and merge it into your source branch, commit, and r
       https://4clojure.oxal.org/#/problem/77
    4. Write a function which solves this problem:
       https://4clojure.oxal.org/#/problem/53
+
+** Lesson 3
+
+   1. Read chapters 9 and 10 of [[https://www.braveclojure.com/clojure-for-the-brave-and-true/][Clojure for the Brave and True]]
+
+   2. Listen to the this online talk: [[https://www.infoq.com/presentations/Are-We-There-Yet-Rich-Hickey/][Are we there yet]]
+      Take notes!  Listen carefully!  Rich is a very deep thinker.
+      Pay particular attention to the analogy about the baseball game,
+      when he discusses how state evolves and should be modelled.
+      Can you see why clojure has =atoms= and =refs=, and immutable values,
+      as its programming model?
+
+   3. Try to solve the [[https://web.archive.org/web/20200701030903/http://www.4clojure.com/problem/178][best poker hand]]
+      problem (The original is down so we will use an archived version).  This will require you
+      to first solve problem 128, [[https://4clojure.oxal.org/#/problem/128][recognizing poker hands]].
+      This is an excercise is structuring and factoring your code
+      as cleanly as possible; pay close attention to your representation
+      and clearly separate the parsing code from the evaluation code.
+      See what reusable functions exist in recognizing all the various
+      types of hands.
+
+      Here I want you to think not simply in terms of learning clojure syntax;
+      (you should have all the necessary tools to solve this already), but
+      at the next level of sophistication; that is, worry about
+      - choosing good names for functions and variables
+
+      - representation of your data structures
+
+      - clearly separating out functionality
+
+      - making things as readable and understandable as you possibly can
+
+      - write a test harness for your code.
 
 ## License
 
