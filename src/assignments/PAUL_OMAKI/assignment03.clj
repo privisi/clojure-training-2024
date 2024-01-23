@@ -37,20 +37,6 @@
 
 
 
-;; Tests for above code.
-
-(= {:suit :diamond :rank 10} (card-converter "DQ"))
-
-(= {:suit :heart :rank 3} (card-converter "H5"))
-
-(= {:suit :club :rank 12} (card-converter "CA"))
-
-(= (range 13) (map (comp :rank card-converter str)
-                   '[S2 S3 S4 S5 S6 S7
-                     S8 S9 ST SJ SQ SK SA]))
-
-
-
 ;; problem 178, uses 128 as a base
 
 (defn hand-converter
@@ -71,7 +57,7 @@
 (defn rank-count
   "Returns true if there are [x] cards with the same rank in a given hand."
   [x hand]
-  (println (map second (rank-frequencies hand)))
+  ;(println (map second (rank-frequencies hand)))
   (some #(= x %) (map second (rank-frequencies hand))))
 
 (defn suit-count
@@ -129,18 +115,6 @@
     :else                         :high-card))
 
 
-;; Tests for above code.
-
-(= :high-card       (poker-hand-categorizer ["HA" "D2" "H3" "C9" "DJ"]))
-(= :pair            (poker-hand-categorizer ["HA" "HQ" "SJ" "DA" "HT"]))
-(= :two-pair        (poker-hand-categorizer ["HA" "DA" "HQ" "SQ" "HT"]))
-(= :three-of-a-kind (poker-hand-categorizer ["HA" "DA" "CA" "HJ" "HT"]))
-(= :straight        (poker-hand-categorizer ["HA" "DK" "HQ" "HJ" "HT"]))
-(= :straight        (poker-hand-categorizer ["HA" "H2" "S3" "D4" "C5"]))
-(= :flush           (poker-hand-categorizer ["HA" "HK" "H2" "H4" "HT"]))
-(= :full-house      (poker-hand-categorizer ["HA" "DA" "CA" "HJ" "DJ"]))
-(= :four-of-a-kind  (poker-hand-categorizer ["HA" "DA" "CA" "SA" "DJ"]))
-(= :straight-flush  (poker-hand-categorizer ["HA" "HK" "HQ" "HJ" "HT"]))
 
 
 
