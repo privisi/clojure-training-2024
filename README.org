@@ -58,13 +58,13 @@ questions arise, /etc./)
  - [X] sequences, lazy seqs
  - [X] lexical vs dynamic scoping
  - [X] reduce, functional idioms
- - [ ] tracing, debugging
+ - [X] tracing, debugging
  - [X] writing tests
  - [X] Introduction to =leiningen=, dependency management,
        and finding and using libraries in clojure.
- - [ ] The philosophical underpinning of state handling in clojure
- - [ ] vars, atoms, refs, agents
- - [ ] threads, futures, promises (concurrency primitives)
+ - [X] The philosophical underpinning of state handling in clojure
+ - [X] vars, atoms, refs, agents
+ - [X] threads, futures, promises (concurrency primitives)
  - [ ] The reader, it's syntax, and brief macro overview
  - [ ] java interop, definining new types
  - [ ] namespaces, the ns macro
@@ -170,6 +170,25 @@ Pull this branch separately, and merge it into your source branch, commit, and r
       - making things as readable and understandable as you possibly can
 
       - write a test harness for your code.
+
+** Lesson 4
+
+   1. There are no koans dealing with multiprocessing (probably just
+      too hard to write them!)  So we'll be doing the book excercises
+      instead.
+      Do the exercises at the end of chapter 9.
+
+   2. Do the exercises at the end of chapter 10.  Note that in the
+      second excercise, the URL shown is incorrect; it should be HTTPS,
+      not http, thus:
+     #+begin_src clojure
+(slurp "https://www.braveclojure.com/random-quote")
+   #+end_src
+      THIS SEEMS TO BE DOWN, create a function with a random delay of 1-3
+      seconds instead and use that to simulate a delay.
+
+   These exercises are longer and more challenging than the ones you have
+   done so far.  Don't hesitate to reach out on the issues board!
 
 ## License
 

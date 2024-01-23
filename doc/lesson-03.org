@@ -1,7 +1,7 @@
 * Lesson Goals
 
  - [X] Field questions and review assignment problems.
- - [ ] tracing, debugging
+ - [X] tracing, debugging
  - [X] writing docstrings
  - [X] writing tests
  - [X] Introduction to =leiningen=, dependency management,
