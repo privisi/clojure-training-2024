@@ -105,7 +105,10 @@
 (defn nendoroid-life
   "The daily life of a Nendoroid as an atom."
   []
-  (def nendoroid (atom {:wear-level 0
+  (def nendoroid (atom {:name "Kyaru"
+                        :current-health 40
+                        :max-health 40
+                        :wear-level 0
                         :replaced-pieces 0}))
   (println @nendoroid)
 
@@ -113,7 +116,7 @@
   (println @nendoroid)
 
   (swap! nendoroid (fn [current-state]
-                     (merge-with + current-state {:missing-pieces 1 :replaced-pieces 1})))
+                     (merge-with + current-state {:missing-pieces 1 :replaced-pieces 1 :current-health -25})))
 
   @nendoroid)
 
@@ -132,7 +135,7 @@
 (defn mock-api-call []
   (Thread/sleep (rand-int 3000)))
 
-(defn get-quote-from-lipsum [] 
+(defn get-quote-from-lipsum []
  ; (mock-api-call) ;; this isn't working properly here or in the thread???
   (println "'Lorem ipsum.' - Dotor L."))
 
@@ -157,6 +160,25 @@
 
 
 ;;        Create representations of two characters in a game. The first character has 15 hit points out of a total of 40. The second character has a healing potion in his inventory. Use refs and transactions to model the consumption of the healing potion and the first character healing.
+
+(def bonzi-buddy (atom {:name "Bonzi"
+                        :current-health 40
+                        :max-health 40
+                        :inventory {:health-potion 1
+                                    :cool-knife 2
+                                    :hammock 1}}))
+
+
+
+(defn use-potion 
+  [bonzi-buddy nendoroid]
+  (dosync
+   (when (and (< (get @nendoroid :current-health) (get @nendoroid :max-health)) 
+          (> (get-in @bonzi-buddy [:inventory :health-potion]) 0)))
+            (alter nendoroid update [:current-health] + 25)
+            (alter bonzi-buddy update-in [:inventory :health-potion] - 1)))
+
+(use-potion bonzi-buddy nendoroid)
 
 
 
