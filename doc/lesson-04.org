@@ -1,9 +1,9 @@
 * Lesson Goals
 
 
- - [ ] The philosophical underpinning of state handling in clojure
- - [ ] vars, atoms, refs, agents
- - [ ] threads, futures, promises (concurrency primitives)
+ - [X] The philosophical underpinning of state handling in clojure
+ - [X] vars, atoms, refs, agents
+ - [X] threads, futures, promises (concurrency primitives)
 
 
 * Preparatory Material for Lesson 4
