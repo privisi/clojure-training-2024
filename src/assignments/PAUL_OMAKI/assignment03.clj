@@ -132,3 +132,5 @@
     (two-pair?       hand) :two-pair
     (rank-count 2    hand) :pair
     :else                  :high-card))
+
+(= :straight        (poker-hand-categorizer ["HA" "H2" "S3" "D4" "C5"]))
