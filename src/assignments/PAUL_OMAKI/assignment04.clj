@@ -12,7 +12,7 @@
 
 (defn bing-search [query]
   (println "Searching Bing for " query)
-  (deref (future (fetch-bing-search query)) 3000 "Timed out."))
+  (future (fetch-bing-search query)) 30000 "Timed out.")
 
 (bing-search "eggs")
 
@@ -27,11 +27,11 @@
                          :mojeek  {:name "Mojeek" :url "https://www.mojeek.com/search?q="}})
 
 (defn get-search-string-base
-  "Converts the keyword of any of the search engines in the map to "
+  "Converts the keyword of any of the search engines in the map to the base component of their search URL."
   [engine]
   (get-in search-engine-urls [engine :url]))
 
-(defn fetch-search-engine-url
+(defn fetch-html-from-search-url
   "Grabs the entire HTML contents of a specified search engine page searching for a specified `query`."
   [engine query]
   (let [engine-url (get-search-string-base engine)
@@ -44,18 +44,18 @@
 (def url-regex #"\b(?:https?|ftp):\/\/[-A-Za-z0-9+&@#\/=%?\\-_.:;]*[-A-Za-z0-9+&@#\/=%\\-_\\?]") ; Regex to get non-malformed URLs.
 
 ;; We want our search results to get useful content, so these are words I don't want to see in the URLs.
-(def unwanted-url-keywords  ["yahoo"
-                             "google"
-                             "yandex"
-                             "w3.org"
-                             "&quot"
-                             "translate.ru"
-                             "yastatic.net"
-                             "bing.net"
-                             "yimg.com"
-                             "brave.com"
-                             "bing.com"
-                             "mojeek.com"])
+(def unwanted-url-keywords   #{"yahoo"
+                               "google"
+                               "yandex"
+                               "w3.org"
+                               "&quot"
+                               "translate.ru"
+                               "yastatic.net"
+                               "bing.net"
+                               "yimg.com"
+                               "brave.com"
+                               "bing.com"
+                               "mojeek.com"})
 
 
 (defn extract-urls
@@ -63,10 +63,10 @@
   [text]
   (re-seq url-regex text))
 
-(defn get-all-urls
+(defn fetch-and-extract-all-urls
   "Uses `extract-url` on a chunk of HTML retrieved from a search engine."
   [engine query]
-  (extract-urls (fetch-search-engine-url engine query)))
+  (extract-urls (fetch-html-from-search-url engine query)))
 
 (defn remove-duplicates
   "Sorts output, then removes exact duplicates found."
@@ -79,7 +79,7 @@
   (not-any? true? (map #(str/includes? string %) list)))
 
 (defn keyword-filter-out
-  "Filters a list of words against another list of keywords, and removes any that are found."
+  "Filters a list of strings against another list of words, and removes any that are found."
   [filter-list coll]
   (filter #(keyword-checker filter-list %) coll))
 
@@ -87,14 +87,14 @@
 (defn search
   "Searches the Internet for the designated query. Engines supported:
 \n`:bing` `:google` `:yandex` `:brave` `:yahoo` `:mojeek`
-\n
 \nExample search: `search :bing \"eggs\"`"
   [engine query]
-  (deref (future (vec
-                  (remove-duplicates
-                   (keyword-filter-out unwanted-url-keywords
-                                       (get-all-urls engine query))))) 3000 "Timed out."))
-
+  (deref (future (sort
+                  (vec
+                   (set
+                    (keyword-filter-out unwanted-url-keywords 
+                     (fetch-and-extract-all-urls engine query)))))) 
+         3000 "Timed out."))
 
 
 
@@ -137,11 +137,11 @@
 
 (defn get-quote-from-lipsum []
  ; (mock-api-call) ;; this isn't working properly here or in the thread???
-  (println "'Lorem ipsum.' - Dotor L."))
+ "'Lorem ipsum.' - Dotor L.")
 
 
 (defn get-quotes
-  "Prints several very important quotes."
+  "Gets several very important quotes."
   []
   (let [quote1 (future (Thread/sleep 3000) (get-quote-from-lipsum))
         quote2 (future (Thread/sleep 2000) (get-quote-from-lipsum))
@@ -170,17 +170,14 @@
 
 
 
-(defn use-potion 
-  [bonzi-buddy nendoroid]
+(defn use-potion [bonzi-buddy nendoroid]
   (dosync
-   (when (and (< (get @nendoroid :current-health) (get @nendoroid :max-health)) 
-          (> (get-in @bonzi-buddy [:inventory :health-potion]) 0)))
-            (alter nendoroid update [:current-health] + 25)
-            (alter bonzi-buddy update-in [:inventory :health-potion] - 1)))
+   (when (and (< (get @nendoroid :current-health) (get @nendoroid :max-health))
+              (> (get-in @bonzi-buddy [:inventory :health-potion]) 0))
+         (swap! nendoroid update-in [:current-health] + 25)
+         (swap! bonzi-buddy update-in [:inventory :health-potion] - 1))))
 
 (use-potion bonzi-buddy nendoroid)
-
-
 
 
 
