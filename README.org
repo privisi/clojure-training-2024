@@ -92,7 +92,7 @@ We are going to make extensive use of the following:
  - The excellent online book: [[https://www.braveclojure.com/clojure-for-the-brave-and-true/][Clojure for the Brave and True]]
  - The [[https://github.com/functional-koans/clojure-koans][clojure koans]]
  - Many of the excellent at [[https://4clojure.oxal.org/][4clojure sample problems]]
- - In lessons 7 and 8, we will make use of [[TODO][this simple server]] playground. (TODO)
+ - In lessons 7 and 8, we will make use of [[https://github.com/privisi/clojure-training-2024-simple-server-playground][this simple server]] playground.
  - In lessons 9 and 10, we will study [[TODO][a bit of reagent]] (TODO).
  - In lessons 11 and 12, we will build our own version of the [[https://www.nytimes.com/puzzles/spelling-bee][New York Times Spelling Bee]].
 
