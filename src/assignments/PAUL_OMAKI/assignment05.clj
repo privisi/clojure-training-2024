@@ -86,3 +86,30 @@
 
 (my-interpose 0 [1 2 3])
 
+
+;; problem 41
+
+#(flatten (partition (- %2 1) %2 nil %1))
+
+;; #(flatten( map drop-last (partition %2 %1)))
+;; (= (#(flatten (partition %2 (+ %2 1) nil %1)) [1 2 3 4 5 6] 4) [1 2 3 5 6])
+;; (#(flatten (map drop-last (partition %2 %2 nil %1))) [1 2 3 4 5 6] 4)
+;;  (partition 4 4 nil [1 2 3 4 5 6] )
+
+
+;; problem 42
+
+(defn factorial
+  "Gets the factorial of a number."
+  [num]
+  (if (= num 1)
+    1
+    (* num (factorial (- num 1)))))
+
+;; (= (factorial 1) 1)
+;; (= (factorial 3) 6)
+;; (= (factorial 5) 120)
+;; (= (factorial 8) 40320)
+
+
+;; problem 4
