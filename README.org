@@ -65,10 +65,10 @@ questions arise, /etc./)
  - [X] The philosophical underpinning of state handling in clojure
  - [X] vars, atoms, refs, agents
  - [X] threads, futures, promises (concurrency primitives)
- - [ ] The reader, it's syntax, and brief macro overview
- - [ ] java interop, definining new types
- - [ ] namespaces, the ns macro
- - [ ] i/o
+ - [X] The reader, it's syntax, and brief macro overview
+ - [X] java interop, definining new types
+ - [X] namespaces, the ns macro
+ - [X] i/o
  - [ ] writing (good!) docstrings
  - [ ] metadata
  - [ ] strings; regexes
@@ -112,7 +112,7 @@ Newer lesson plans will be added in as lessons are completed.
   - [[file:doc/lesson-03.org::*Lesson%20Goals][Lesson 3]] :: More functional programming
   - [[file:doc/lesson-04.org::*Lesson%20Goals][Lesson 4]] :: References and identities, threads
   - [[file:doc/lesson-05.org::*Lesson%20Goals][Lesson 5]] :: Java interop, namespaces, i/o
-  - Lesson 6 :: Clojure odds and ends
+  - [[file:doc/lesson-06.org::*Lesson%20Goals][Lesson 6]] :: Clojure odds and ends
   - Lesson 7 :: Building a simple HTTP service - Guess the right number!
   - Lesson 8 :: core.async and Dynamo DB
   - Lesson 9 :: Clojurescript
@@ -189,6 +189,33 @@ Pull this branch separately, and merge it into your source branch, commit, and r
 
    These exercises are longer and more challenging than the ones you have
    done so far.  Don't hesitate to reach out on the issues board!
+
+** Lesson 5
+
+ - Read chapter 6, specially the ns macro
+
+ - write a unix-like grep command in clojure, so that, e.g.
+ #+begin_src clojure
+   (grep "/tmp/somefile.txt" regex)
+   ;; =>
+   ["match 1" "match 2" "..."]
+ #+end_src
+
+ - for extra difficulty, make it return a lazy sequence of
+   matches instead.  What difficulties does this present?
+   Which version is better/more useful? Can you implement
+   the former in terms of the latter?  Discuss.
+
+ - You now know >90% of clojure syntax and functions, so you
+   should start exercising your newfound powers as much as possible.
+   Practice makes perfect!  Here are some problem ideas for you to try:
+   The Advent of code is always fun; the last 2 years had good problems.
+   You can try to get as far as you can on these:
+   - https://adventofcode.com/2018
+
+   Solve as many of the [[https://4clojure.oxal.org][4 clojure]] problems as you can; they are arranged
+   either by topic or difficulty.  Try those which you understand least!
+   Don't be afraid to call out for help!
 
 ## License
 
