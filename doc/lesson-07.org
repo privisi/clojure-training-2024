@@ -9,6 +9,7 @@
 * Preparatory Material for Lesson 7
 
  - Read [[https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol][Hypertext_Transfer_Protocol]], in particular the section on [[https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Message_format][Message Format]]
+ - Read through https://www.restapitutorial.com/
    and the [[https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Example_session][example session]].
  - Read https://github.com/ring-clojure/ring/wiki/Concepts
  - Read https://github.com/weavejester/compojure/wiki/Routes-In-Detail
