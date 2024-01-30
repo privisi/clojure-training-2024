@@ -69,14 +69,14 @@ questions arise, /etc./)
  - [X] java interop, definining new types
  - [X] namespaces, the ns macro
  - [X] i/o
- - [ ] writing (good!) docstrings
- - [ ] metadata
+ - [X] writing (good!) docstrings
+ - [X] metadata
  - [ ] strings; regexes
- - [ ] throw/catch, slingshot
- - [ ] making simple HTTP requests
- - [ ] multimethods
- - [ ] finding and using libraries
- - [ ] supply a list of recommended good libs.
+ - [X] throw/catch, slingshot
+ - [X] making simple HTTP requests
+ - [X] multimethods
+ - [X] finding and using libraries
+ - [X] supply a list of recommended good libs.
  - [ ] reader syntax
  - [ ] Simple HTTP service: ring handlers, libraries
  - [ ] core.async
@@ -92,7 +92,7 @@ We are going to make extensive use of the following:
  - The excellent online book: [[https://www.braveclojure.com/clojure-for-the-brave-and-true/][Clojure for the Brave and True]]
  - The [[https://github.com/functional-koans/clojure-koans][clojure koans]]
  - Many of the excellent at [[https://4clojure.oxal.org/][4clojure sample problems]]
- - In lessons 7 and 8, we will make use of [[TODO][this simple server]] playground. (TODO)
+ - In lessons 7 and 8, we will make use of [[https://github.com/privisi/clojure-training-2024-simple-server-playground][this simple server]] playground.
  - In lessons 9 and 10, we will study [[TODO][a bit of reagent]] (TODO).
  - In lessons 11 and 12, we will build our own version of the [[https://www.nytimes.com/puzzles/spelling-bee][New York Times Spelling Bee]].
 
@@ -113,7 +113,7 @@ Newer lesson plans will be added in as lessons are completed.
   - [[file:doc/lesson-04.org::*Lesson%20Goals][Lesson 4]] :: References and identities, threads
   - [[file:doc/lesson-05.org::*Lesson%20Goals][Lesson 5]] :: Java interop, namespaces, i/o
   - [[file:doc/lesson-06.org::*Lesson%20Goals][Lesson 6]] :: Clojure odds and ends
-  - Lesson 7 :: Building a simple HTTP service - Guess the right number!
+  - [[file:doc/lesson-07.org::*Lesson%20Goals][Lesson 7]] :: Building a simple HTTP service - Guess the right number!
   - Lesson 8 :: core.async and Dynamo DB
   - Lesson 9 :: Clojurescript
   - Lesson 10 :: Re-Frame
@@ -216,6 +216,18 @@ Pull this branch separately, and merge it into your source branch, commit, and r
    Solve as many of the [[https://4clojure.oxal.org][4 clojure]] problems as you can; they are arranged
    either by topic or difficulty.  Try those which you understand least!
    Don't be afraid to call out for help!
+
+* Lesson 6
+
+ - Extend the coin operated state machine so it can make proper change
+   if user pays too much.
+
+ - Do the reading in preparation for Lesson 7; get to understand HTTP!
+
+ - Continue working on your AOC challenges.  Rewrite your existing solutions
+   to be clearer and more elegant, on the basis of the comments I've made on
+   your pull reviews.
+
 
 ## License
 
