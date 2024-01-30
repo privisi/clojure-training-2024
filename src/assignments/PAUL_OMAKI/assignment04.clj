@@ -142,20 +142,49 @@
 
 
 (defn get-quotes
-  "Gets several very important quotes. Returns a vector."
-  []
-  (let [quote1 (future (get-quote-from-lipsum))
-        quote2 (future (get-quote-from-lipsum))
-        quote3 (future (get-quote-from-lipsum))
-        quote4 (future (get-quote-from-lipsum))
-        quote-collection []]
-    (conj quote-collection
-          (deref quote1 2000 "Timed out.")
-          (deref quote2 2000 "Timed out.")
-          (deref quote3 2000 "Timed out.")
-          (deref quote4 2000 "Timed out."))))
+  "Gets several very important quotes. Returns 4 quotes if not specified. Returns as a vector."
+  ([] 
+   (let [quote1 (future (get-quote-from-lipsum))
+         quote2 (future (get-quote-from-lipsum))
+         quote3 (future (get-quote-from-lipsum))
+         quote4 (future (get-quote-from-lipsum))
+         quote-collection []]
+     (conj quote-collection
+           (deref quote1 2000 nil)
+           (deref quote2 2000 nil)
+           (deref quote3 2000 nil)
+           (deref quote4 2000 nil))))
+  
+  ([num-quotes]
+   (let [quote-futures (doall (repeatedly num-quotes #(future (get-quote-from-lipsum))))
+         quote-collection (doall (map #(deref % 2000 nil) quote-futures))]
+     quote-collection)))
 
-(get-quotes)
+(defn word-count 
+  "Counts the number of words in a string."
+  [string]
+  (->> (str/split string #" ") 
+            (count)))
+
+(defn vectorize-gotten-quotes [quantity]
+  (vec (filter identity (get-quotes quantity))))
+
+(def word-counter 
+    (atom
+     {}))
+
+(defn quote-word-count [quantity]
+  (let [quotes (vectorize-gotten-quotes quantity)]
+    (swap! word-counter assoc 
+           (str "Quote Batch "(+ 1 (count @word-counter)) ", "
+                                       (count quotes) " fetched") 
+           (reduce + (map word-count quotes)))))
+
+(quote-word-count 3)
+(quote-word-count 4)
+(quote-word-count 5)
+
+@word-counter
 
 
 
