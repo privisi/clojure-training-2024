@@ -74,7 +74,7 @@
 ;;   (map first (partition-by identity (sort output))))
 
 (defn keyword-checker
-  "Checks a string against a list of keywords. If any keywords are found, returns `false`."
+  "Checks a string against a list of words. If any of the words on the list are found in the string, returns `false`."
   [list string]
   (not-any? true? (map #(str/includes? string %) list)))
 
@@ -90,10 +90,10 @@
 \nExample search: `search :bing \"eggs\"`"
   [engine query]
   (deref (future (->> (fetch-and-extract-all-urls engine query)
-                     (filter-out-strings-containing-these unwanted-url-keywords)
-                     (set)
-                     (vec)
-                     (sort))) 
+                      (filter-out-strings-containing-these unwanted-url-keywords)
+                      (set)
+                      (vec)
+                      (sort)))
          3000 "Timed out."))
 
 
@@ -132,23 +132,24 @@
 
 
 
-(defn mock-api-call []
-  (Thread/sleep (rand-int 3000)))
 
-(defn get-quote-from-lipsum []
- ; (mock-api-call) ;; this isn't working properly here or in the thread???
- (rand-nth ["'Lorem ipsum.' - Dotor L." "'Consectetur adipiscing elit.' - Dotor L." "'Duis aute irure dolor.' - Dotor L." "'Excepteur sint occaecat cupidatat non proident.' - Dotor L."]))
+
+(defn get-quote-from-lipsum
+  "Gets a random quote after a random delay of 0-3999ms."
+  []
+  (Thread/sleep (long (rand-int 4000)))
+  (rand-nth ["'Lorem ipsum.' - Dotor L." "'Consectetur adipiscing elit.' - Dotor L." "'Duis aute irure dolor.' - Dotor L." "'Excepteur sint occaecat cupidatat non proident.' - Dotor L."]))
 
 
 (defn get-quotes
   "Gets several very important quotes. Returns a vector."
   []
-  (let [quote1 (future (Thread/sleep 3000) (get-quote-from-lipsum))
-        quote2 (future (Thread/sleep 2000) (get-quote-from-lipsum))
-        quote3 (future (Thread/sleep 1999) (get-quote-from-lipsum))
-        quote4 (future (Thread/sleep 1000) (get-quote-from-lipsum))
+  (let [quote1 (future (get-quote-from-lipsum))
+        quote2 (future (get-quote-from-lipsum))
+        quote3 (future (get-quote-from-lipsum))
+        quote4 (future (get-quote-from-lipsum))
         quote-collection []]
-    (conj quote-collection 
+    (conj quote-collection
           (deref quote1 2000 "Timed out.")
           (deref quote2 2000 "Timed out.")
           (deref quote3 2000 "Timed out.")
@@ -176,8 +177,8 @@
   (dosync
    (when (and (< (get @nendoroid :current-health) (get @nendoroid :max-health))
               (> (get-in @bonzi-buddy [:inventory :health-potion]) 0))
-         (swap! nendoroid update-in [:current-health] + 25)
-         (swap! bonzi-buddy update-in [:inventory :health-potion] - 1))))
+     (swap! nendoroid update-in [:current-health] + 25)
+     (swap! bonzi-buddy update-in [:inventory :health-potion] - 1))))
 
 (use-potion bonzi-buddy nendoroid)
 

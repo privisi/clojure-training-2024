@@ -1,20 +1,14 @@
 (ns assignments.PAUL-OMAKI.assignment05 
   (:require [clojure.string :as str]))
 
-
-(defn split-lines-from-file
-  "Gets all the text lines from a file and outputs them with the `split-lines` function."
-  [file-path]
-  (->  file-path
-       slurp
-       (str/split-lines)))
-
 (defn grep
   "Returns lines in a file that match a given regex find value. Returns a vector."
   [file-path regex]
-  (->> (split-lines-from-file file-path)
-       (filter #(re-seq (re-pattern regex) %))
-       vec))
+  (->>  file-path
+        slurp
+        (str/split-lines)
+        (filter #(re-seq (re-pattern regex) %))
+        vec))
 
 (grep "src/assignments/PAUL_OMAKI/somefile.txt" "[a]")
 
