@@ -19,8 +19,7 @@
   [ints]
   (loop [int-list   ints
          total       0
-         past-totals [ ]]
-    (println past-totals)
+         past-totals #{0}] 
     (let [first-int (first int-list)]
       (if (contains? past-totals (+ first-int total))
         (+ first-int total)
