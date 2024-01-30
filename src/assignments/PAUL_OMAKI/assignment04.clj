@@ -78,7 +78,7 @@
   [list string]
   (not-any? true? (map #(str/includes? string %) list)))
 
-(defn keyword-filter-out
+(defn filter-out-strings-containing-these
   "Filters a list of strings against another list of words, and removes any that are found."
   [filter-list coll]
   (filter #(keyword-checker filter-list %) coll))
@@ -92,7 +92,7 @@
   (deref (future (sort
                   (vec
                    (set
-                    (keyword-filter-out unwanted-url-keywords 
+                    (filter-out-strings-containing-these unwanted-url-keywords 
                      (fetch-and-extract-all-urls engine query)))))) 
          3000 "Timed out."))
 
