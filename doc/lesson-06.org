@@ -1,15 +1,15 @@
 * Lesson 6: Clojure odds and ends
 
- - [ ] metadata
+ - [X] metadata
  - [ ] strings; regexes
- - [ ] throw/catch; slingshot
- - [ ] making simple HTTP requests
- - [ ] multimethods
- - [ ] finding and using libraries
- - [ ] browsing namespaces
- - [ ] supply a list of recommended good libs.
- - [ ] writing good docstrings
- - [ ] linting with kondo; emacs integration
+ - [X] throw/catch; slingshot
+ - [X] making simple HTTP requests
+ - [X] multimethods
+ - [X] finding and using libraries
+ - [X] browsing namespaces
+ - [X] supply a list of recommended good libs.
+ - [X] writing good docstrings
+ - [X] linting with kondo; emacs integration
 
 * Preparatory Material for Lesson 6
 

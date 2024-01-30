@@ -9,6 +9,7 @@
                  [org.xerial/sqlite-jdbc "3.30.1"]
 
                  [clj-time "0.15.2"]
+                 [org.clojure/tools.logging "1.2.4"]
 
                  [superstring "3.0.0"]
                  [funcool/cuerdas "RELEASE"]
