@@ -73,7 +73,7 @@
 ;;   [output]
 ;;   (map first (partition-by identity (sort output))))
 
-(defn keyword-checker
+(defn string-good-words-only-checker
   "Checks a string against a list of words. If any of the words on the list are found in the string, returns `false`."
   [list string]
   (not-any? true? (map #(str/includes? string %) list)))
@@ -81,7 +81,7 @@
 (defn filter-out-strings-containing-these
   "Filters a list of strings against another list of words, and removes any that are found."
   [filter-list coll]
-  (filter #(keyword-checker filter-list %) coll))
+  (filter #(string-good-words-only-checker filter-list %) coll))
 
 
 (defn search
@@ -138,23 +138,18 @@
   "Gets a random quote after a random delay of 0-3999ms."
   []
   (Thread/sleep (long (rand-int 4000)))
-  (rand-nth ["'Lorem ipsum.' - Dotor L." "'Consectetur adipiscing elit.' - Dotor L." "'Duis aute irure dolor.' - Dotor L." "'Excepteur sint occaecat cupidatat non proident.' - Dotor L."]))
+  (rand-nth ["'Lorem ipsum.' - Dotor L." 
+             "'Consectetur adipiscing elit.' - Dotor L." 
+             "'Duis aute irure dolor.' - Dotor L." 
+             "'Excepteur sint occaecat cupidatat non proident.' - Dotor L."
+             "'Sed sed ipsum in diam scelerisque pharetra sit amet vitae libero.' - Dotor L."
+             "'Maecenas quis eros in nulla dapibus volutpat eget eget velit.' - Dotor L."]))
 
 
 (defn get-quotes
   "Gets several very important quotes. Returns 4 quotes if not specified. Returns as a vector."
   ([] 
-   (let [quote1 (future (get-quote-from-lipsum))
-         quote2 (future (get-quote-from-lipsum))
-         quote3 (future (get-quote-from-lipsum))
-         quote4 (future (get-quote-from-lipsum))
-         quote-collection []]
-     (conj quote-collection
-           (deref quote1 2000 nil)
-           (deref quote2 2000 nil)
-           (deref quote3 2000 nil)
-           (deref quote4 2000 nil))))
-  
+   (get-quotes 4)) ;; default value 
   ([num-quotes]
    (let [quote-futures (doall (repeatedly num-quotes #(future (get-quote-from-lipsum))))
          quote-collection (doall (map #(deref % 2000 nil) quote-futures))]
@@ -167,13 +162,22 @@
             (count)))
 
 (defn vectorize-gotten-quotes [quantity]
-  (vec (filter identity (get-quotes quantity))))
+  (vec (filter identity (get-quotes quantity)))) ; filter by identity to remove nil values from the vector
 
-(def word-counter 
+(def word-counter "The atom that stores how many words were retrieved from each fetch with `quote-word-count`." 
     (atom
      {}))
 
-(defn quote-word-count [quantity]
+(defn quote-word-count
+  "Fetches `quantity` quotes from a list of example quotes, 
+   then counts how many words there are total between the obtained quotes 
+   and appends them to the atom `@word-counter`. Any quotes that were 
+   unable to be fetched will be deducted from the output.
+   
+   Example of atom record from `quote-word-count 4`:
+
+   `{\"Quote Batch 1, 3 fetched\" 18}`"
+  [quantity]
   (let [quotes (vectorize-gotten-quotes quantity)]
     (swap! word-counter assoc 
            (str "Quote Batch "(+ 1 (count @word-counter)) ", "
