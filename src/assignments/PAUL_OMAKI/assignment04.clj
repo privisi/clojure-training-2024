@@ -68,10 +68,10 @@
   [engine query]
   (extract-urls (fetch-html-from-search-url engine query)))
 
-(defn remove-duplicates
-  "Sorts output, then removes exact duplicates found."
-  [output]
-  (map first (partition-by identity (sort output))))
+;; (defn remove-duplicates
+;;   "Sorts output, then removes exact duplicates found."
+;;   [output]
+;;   (map first (partition-by identity (sort output))))
 
 (defn keyword-checker
   "Checks a string against a list of keywords. If any keywords are found, returns `false`."
@@ -137,20 +137,22 @@
 
 (defn get-quote-from-lipsum []
  ; (mock-api-call) ;; this isn't working properly here or in the thread???
- "'Lorem ipsum.' - Dotor L.")
+ (rand-nth ["'Lorem ipsum.' - Dotor L." "'Consectetur adipiscing elit.' - Dotor L." "'Duis aute irure dolor.' - Dotor L." "'Excepteur sint occaecat cupidatat non proident.' - Dotor L."]))
 
 
 (defn get-quotes
-  "Gets several very important quotes."
+  "Gets several very important quotes. Returns a vector."
   []
   (let [quote1 (future (Thread/sleep 3000) (get-quote-from-lipsum))
         quote2 (future (Thread/sleep 2000) (get-quote-from-lipsum))
         quote3 (future (Thread/sleep 1999) (get-quote-from-lipsum))
-        quote4 (future (Thread/sleep 1000) (get-quote-from-lipsum))]
-    (deref quote1 2000 "Timed out.")
-    (deref quote2 2000 "Timed out.")
-    (deref quote3 2000 "Timed out.")
-    (deref quote4 2000 "Timed out.")))
+        quote4 (future (Thread/sleep 1000) (get-quote-from-lipsum))
+        quote-collection []]
+    (conj quote-collection 
+          (deref quote1 2000 "Timed out.")
+          (deref quote2 2000 "Timed out.")
+          (deref quote3 2000 "Timed out.")
+          (deref quote4 2000 "Timed out."))))
 
 (get-quotes)
 
@@ -180,18 +182,3 @@
 (use-potion bonzi-buddy nendoroid)
 
 
-
-;; (def test-set ["https://avatars.mds.yandex.net"
-;;                "https://favicon.yandex.net"
-;;                "http://www.w3.org/2000/svg"
-;;                "https://en.wikipedia.org/wiki/Egg"])
-
-;; (filter-unwanted-urls test-set)
-
-;; (str/includes? "egggs" "egg")
-
-;; (filter #(not (str/includes? % "yandex")) test-set)
-
-;; (map #(not (str/includes? % "yandex")) test-set)
-
-;; (#( str/includes? %1 (unwanted-url-keywords 2)) "https://avatars.mds.yandex.net")

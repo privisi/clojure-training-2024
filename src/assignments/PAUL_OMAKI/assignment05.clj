@@ -16,9 +16,9 @@
        (filter #(re-seq (re-pattern regex) %))
        vec))
 
-(grep "/tmp/somefile.txt" "[a]")
+(grep "src/assignments/PAUL_OMAKI/somefile.txt" "[a]")
 
-(grep "/somefile.txt" "bee")
+(grep "src/assignments/PAUL_OMAKI/somefile.txt" "bee")
 
 
 
@@ -112,4 +112,9 @@
 ;; (= (factorial 8) 40320)
 
 
-;; problem 4
+;; problem 43
+
+(defn reverse-interleave [seq part-by]
+ (apply map vector (partition part-by seq)))
+
+(reverse-interleave (range 10) 5)
