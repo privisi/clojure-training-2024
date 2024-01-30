@@ -89,11 +89,11 @@
 \n`:bing` `:google` `:yandex` `:brave` `:yahoo` `:mojeek`
 \nExample search: `search :bing \"eggs\"`"
   [engine query]
-  (deref (future (sort
-                  (vec
-                   (set
-                    (filter-out-strings-containing-these unwanted-url-keywords 
-                     (fetch-and-extract-all-urls engine query)))))) 
+  (deref (future (->> (fetch-and-extract-all-urls engine query)
+                     (filter-out-strings-containing-these unwanted-url-keywords)
+                     (set)
+                     (vec)
+                     (sort))) 
          3000 "Timed out."))
 
 
