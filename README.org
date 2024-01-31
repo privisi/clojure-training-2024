@@ -77,8 +77,9 @@ questions arise, /etc./)
  - [X] multimethods
  - [X] finding and using libraries
  - [X] supply a list of recommended good libs.
- - [ ] reader syntax
- - [ ] Simple HTTP service: ring handlers, libraries
+ - [X] reader syntax
+ - [X] Simple HTTP service: ring handlers, libraries
+ - [X] Sending HTTP requests
  - [ ] core.async
  - [ ] clojurescript
  - [ ] reframe
@@ -114,7 +115,7 @@ Newer lesson plans will be added in as lessons are completed.
   - [[file:doc/lesson-05.org::*Lesson%20Goals][Lesson 5]] :: Java interop, namespaces, i/o
   - [[file:doc/lesson-06.org::*Lesson%20Goals][Lesson 6]] :: Clojure odds and ends
   - [[file:doc/lesson-07.org::*Lesson%20Goals][Lesson 7]] :: Building a simple HTTP service - Guess the right number!
-  - Lesson 8 :: core.async and Dynamo DB
+  - [[file:doc/lesson-08.org::*Lesson%20Goals][Lesson 8]] :: core.async and Postgresql
   - Lesson 9 :: Clojurescript
   - Lesson 10 :: Re-Frame
   - Lesson 11 :: The word puzzle (part 1)
@@ -228,6 +229,49 @@ Pull this branch separately, and merge it into your source branch, commit, and r
    to be clearer and more elegant, on the basis of the comments I've made on
    your pull reviews.
 
+* Lesson 7
+
+ - Clone the sample toy problem repository, and create a new branch (use your name).
+   Add the following features to the code in your new branch:
+
+   + Restrict the game so that the player is told she loses if she fails to
+     guess the correct number in 5 guesses or less.
+
+   + Add a "login" page where the user enters their name before being
+     allowed to play the game.  Modify your test client so that this
+     authorization is sent; the server should refuse to play the game
+     if the authorization is not present.
+
+   + Make the server be able to play multiple games, against multiple
+     players, simultaneously.
+
+   + If you are keeping any stateful information in the system (and you'll
+     have to do do these features, make sure the functions to manipulate
+     and inspect that state are abstracted away, so we can re-implement them
+     using a database next class.
+
+   + The current game uses the GET verb to play the game, but this is bad form
+     for operations which modify state on the server (such as creating the game,
+     recording number of attempts /etc./ because GET requests can be cached by
+     intermediate proxies.  What are more appropriate verbs to use in for the
+     uris in this game?  Make the proper modification to the game.
+
+ - Modify the README file to clearly indicate all urls, and how I'm supposed to
+   proceed to play the game to verify your work.  Pretend I'm a naive user; this
+   is an exercise in writing good documentation.
+
+ - Sending HTTP Requests to pipedrive end points
+
+   + Sign up for https://www.pipedrive.com/ dev account
+
+   + https://developers.pipedrive.com/docs/api/v1
+
+   + Implement some functionality in viewing, creating, filtering, deleting persons
+     + NOTE: Filter within the request itself, not grab every person and filter in clojure
+
+   + Create functionality around leads
+
+   + Create some additional functionality on a section / sections you find interesting
 
 ## License
 
