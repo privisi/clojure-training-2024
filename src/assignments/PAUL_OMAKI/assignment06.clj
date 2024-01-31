@@ -8,7 +8,11 @@
                       `:coins []`"
   {:state :start :coins []})
 
-(def price-of-soda 220)
+
+
+(def drink-prices {:cola 170 :lychee-soda 150 :melon-soda 120 :water 80 :coffee 140})
+
+(defn price-of-soda [drink] (get drink-prices drink))
 
 (defn coin-value
   "The sum value of all the coins currently in the machine."
@@ -22,17 +26,17 @@
   ([machine]
    (dispense-if-enough-money machine :cola) )
   ([machine drink]
-   (if (< (coin-value machine) price-of-soda)
+   (if (< (coin-value machine) (price-of-soda drink))
      (do 
        (println "Not enough money.")
        machine)
-     (if (< 0 (- (coin-value machine) price-of-soda))
+     (if (< 0 (- (coin-value machine) (price-of-soda drink)))
        (do                               ; We have enough money! Too much of it, in fact!
-         (println "Disbursing delicious soda: " drink)
-         (println "Refunding " (- (coin-value machine) price-of-soda) " cents.")
+         (println "Disbursing delicious drink: " drink)
+         (println "Refunding " (- (coin-value machine) (price-of-soda drink)) " cents.")
          vending-machine)
        (do                               ; We have just enough money! No need to refund!
-         (println "Disbursing delicious soda: " drink)
+         (println "Disbursing delicious drink: " drink)
          vending-machine)))))
 
 
@@ -117,19 +121,20 @@
               {:type :coin :coin-value 20}
               {:type :button :button-value :cola}
               {:type :refund}
-              {:type :button :button-value :cola}
+              {:type :button :button-value :coffee}
               {:type :coin :coin-value 200}
               {:type :coin :coin-value 200}
-              {:type :button :button-value :cola}
+              {:type :button :button-value :lychee-soda}
               {:type :coin :coin-value 200}
+              {:type :button :button-value :melon-soda}
               {:type :coin :coin-value 200}
               {:type :coin :coin-value 10}
               {:type :coin :coin-value 2000}
               {:type :coin :coin-value 200}
-              {:type :button :button-value :cola}
-              {:type :button :button-value :cola}
-              {:type :button :button-value :cola}
-              {:type :button :button-value :cola}]]
+              {:type :button :button-value :water}
+              {:type :button :button-value :water}
+              {:type :button :button-value :water}
+              {:type :button :button-value :water}]]
  
   
   (reduce handle
