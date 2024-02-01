@@ -1,0 +1,21 @@
+* Lesson 8: core.async and dynamoDB
+
+ - [ ] core.async: Communicating sequential processes
+ - [ ] Postgres: Our first out of process dependency
+
+* Preparatory Material for Lesson 8
+ - Use docker to run postgres and pgadmin
+ - Read and try https://www.postgresql.org/docs/current/tutorial.html
+ - Read and try https://www.postgresqltutorial.com/
+
+ - Read Chapter 11 of [[https://www.braveclojure.com/clojure-for-the-brave-and-true/][Brave and True]] on =core.async=.
+
+* Lesson plan
+** Discuss problem solutions
+** Things to explain
+   - simple Postgres example
+     - creating tables
+     - querying
+     - inserting data
+   - core.async tutorial
+   - creating HTML with hiccup (time permitting).
