@@ -32,18 +32,27 @@
    (let [machine-money (coin-value machine)
          drink-price   (price-of-soda drink)
          surplus-money (- machine-money drink-price)]
-     (if (< machine-money drink-price)
-       (do 
-         (println "Not enough money.")
-         machine)
-       (if (< 0 surplus-money)
-         (do                               ; We have enough money! Too much of it, in fact!
-           (println "Disbursing delicious drink: " drink)
-           (println "Refunding " surplus-money " cents.")
+     
+     (cond
+       (= 0 machine-money)
+         (do                               ; No money in machine? Reset machine and selection.
+           (println "Please insert money first.")
            vending-machine)
+       (< machine-money drink-price)
+         (do                               ; Stay in this state but warn of insufficient balance.
+           (println "Not enough money.")
+           machine)
+       (= 0 surplus-money)
          (do                               ; We have just enough money! No need to refund!
            (println "Disbursing delicious drink: " drink)
-           vending-machine))))))
+           vending-machine)
+       (pos? surplus-money)
+         (do                               ; We have enough money! Too much of it, in fact! Refund and reset machine.
+           (println "Disbursing delicious drink: " drink)
+           (println "Refunding " surplus-money " cents.")
+           vending-machine)))))
+       
+       
 
 
 
