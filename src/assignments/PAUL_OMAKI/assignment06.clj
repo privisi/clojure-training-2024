@@ -2,10 +2,12 @@
 
 
 
-(def vending-machine "Vending machine base state.
+(def vending-machine
+  "Vending machine base state.
                       
-                      `:state :start`
-                      `:coins []`"
+  `:state :start` 
+  
+   `:coins []`"
   {:state :start :coins []})
 
 
@@ -21,23 +23,27 @@
 
 ;; split out for ease of reading code
 (defn dispense-if-enough-money
-  "Checks the state of the vending machine to see if there is enough to purchase the soda.
-   If there is, dispenses soda and refunds whatever is left in the machine."
+  "Checks the state of the vending machine to see if there is enough `coin-value` to purchase the `drink`.
+   If there is, dispenses `drink` and refunds whatever `coin-value` is left in the machine.
+   Defaults to `:cola` if not specified."
   ([machine]
-   (dispense-if-enough-money machine :cola) )
+   (dispense-if-enough-money machine :cola))
   ([machine drink]
-   (if (< (coin-value machine) (price-of-soda drink))
-     (do 
-       (println "Not enough money.")
-       machine)
-     (if (< 0 (- (coin-value machine) (price-of-soda drink)))
-       (do                               ; We have enough money! Too much of it, in fact!
-         (println "Disbursing delicious drink: " drink)
-         (println "Refunding " (- (coin-value machine) (price-of-soda drink)) " cents.")
-         vending-machine)
-       (do                               ; We have just enough money! No need to refund!
-         (println "Disbursing delicious drink: " drink)
-         vending-machine)))))
+   (let [machine-money (coin-value machine)
+         drink-price   (price-of-soda drink)
+         surplus-money (- machine-money drink-price)]
+     (if (< machine-money drink-price)
+       (do 
+         (println "Not enough money.")
+         machine)
+       (if (< 0 surplus-money)
+         (do                               ; We have enough money! Too much of it, in fact!
+           (println "Disbursing delicious drink: " drink)
+           (println "Refunding " surplus-money " cents.")
+           vending-machine)
+         (do                               ; We have just enough money! No need to refund!
+           (println "Disbursing delicious drink: " drink)
+           vending-machine))))))
 
 
 
@@ -85,15 +91,15 @@
 
 (defmethod handle [:ready :coin] [machine event]
   (println "Getting a coin in the ready state: " (:coin-value event) " cents added.")
-           (let [machine (-> machine
-                             (assoc :state :ready)
-                             (update :coins conj (:coin-value event)))]
+           (let [machine 
+                 (-> machine
+                     (assoc :state :ready)
+                     (update :coins conj (:coin-value event)))] 
              machine))
 
 (defmethod handle [:ready :button] [machine event]
   (println "Button pressed: " (:button-value event))
-  (let [machine  machine
-        drink    (:button-value event)]
+  (let [drink (:button-value event)]
     (dispense-if-enough-money machine drink)))
 
 
