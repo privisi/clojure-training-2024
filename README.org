@@ -80,7 +80,7 @@ questions arise, /etc./)
  - [X] reader syntax
  - [X] Simple HTTP service: ring handlers, libraries
  - [X] Sending HTTP requests
- - [ ] core.async
+ - [X] core.async
  - [ ] clojurescript
  - [ ] reframe
  - [ ] macros, threading macros
@@ -272,6 +272,21 @@ Pull this branch separately, and merge it into your source branch, commit, and r
    + Create functionality around leads
 
    + Create some additional functionality on a section / sections you find interesting
+
+* Lesson 8
+
+ - Extend the "guess the number game" code you did at the
+   end of lesson 7 by replacing all the state keeping
+   functions with calls to Postgres.
+   Design your tables carefully.
+
+ - Revisit the problem of returning the first hits from
+   multiple search engines, this time using =core.async= constructs
+   instead of futures and promises.  (You'll need to use the =alts!=
+   macro).  Compare and contrast the two approaches.
+
+
+
 
 ## License
 

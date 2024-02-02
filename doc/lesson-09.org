@@ -1,0 +1,114 @@
+
+* Lesson 9: clojurescript
+
+ - [ ] clojurescript
+
+TODO: rewrite for shadow-cljs
+* Preparatory Material for Lesson 9
+
+ - Create a new clojurescript playground project with the following command:
+   #+begin_src shell
+ lein new figwheel-main hello-world.core -- --reagent
+ #+end_src
+
+ - Read this [[https://clojurescript.org/guides/quick-start][clojurescript quick start]] tutorial.  Don't worry too much that he
+   uses the =clj= command line tool (we will use leiningen and figwheel) and
+   don't worry about the "Running ClojureScript on Node.js" section (we won't
+   be doing that).
+
+   Concentrate on learning the compilation model.
+
+ - Now connect a live, reloadable environment by going into your
+   new project and running this command:
+   #+begin_src shell
+ cd hello-world.core
+ lein fig:build
+ #+end_src
+   This should open your browser automatically on [[http://localhost:9500]]
+
+ - Now bring up the file =src/hello_world/core.cljs= and read through it.
+   Don't worry too much if you don't know what it's doing, but change
+   the text inside the =hello-world= function and save the file.  The change should
+   automatically be reflected in your browser.
+
+ - [[https://www.youtube.com/watch?v=KZjFVdU8VLI][This video]] illustrates live reloading and coding of a game running in the
+     browser using [[https://figwheel.org/][figwheel]].  He also has another, longer talk which goes in
+     more detail if you are interested.
+
+ - The [[https://figwheel.org/tutorial][figwheel tutorial]] is a great read, although I personally do not use
+   the workflow he describes, I use the workflow described in https://figwheel.org/docs/emacs.html
+   I have verified that the simple hello-world.core project works whilst
+   integrated both in emacs and VS code.  Feel free to experiment in bringing up
+   this environment.  You will know you have succeeded when you can
+   go in the =core.cljs= file, add a line like this:
+   #+begin_src clojure
+ (js/alert "Whoo, hooo! we made it!")
+ #+end_src
+   to the buffer, hit =C-M-X= on the form (or the VS Code equivalent), and
+   see a popup immediately appear in your browser window.
+
+ - If you are not completely exhausted by then, and you know some javascript
+   (or even if you don't), [[https://kanaka.github.io/clojurescript/web/synonym.html][this site]] provides a list of equivalences between
+   some common clojurescript forms and their javascript equivalent.  Note how
+   much more sensible things are on the clojurescript side...
+
+ - Some basic understanding of javascript will provide inevitable in the long
+   run, however that is it own, huge topic.  We want to learn only enough to
+   get ourselves out of trouble if something fails.  Still, understanding
+   the basics of the language is worthwhile; I found the [[https://javascript.info/]]
+   site to be reasonable, but there are a million sites and books on this topic,
+   so I leave this part up to you.
+
+
+* Lesson plan
+** Discuss problem solutions
+ - blocking i/o in core.async
+
+ - Being aware of what's in/process and out/process, that's
+   where real bottlenecks in software lie.  Example:
+
+ #+begin_src clojure
+   (defn guess-answer
+     "Returns the result of a guess from an authorized user"
+     [guess user]
+     (if (nil? guess)
+       nil
+       (let [user (db/get-user user)]
+         (if (= user (get-in user [:item :username]))
+           (cond
+
+             (= guess (get-in (db/get-user user) [:item :target]))
+             (do (new-game! user)          ; restart the game with a new target number
+                 :correct)
+
+             (< guess (get-in (db/get-user user) [:item :target]))
+             (do (update-counter user)
+                 (if (<= 5 (get-in (db/get-user user) [:item :counter]))
+                   (do (new-game! user)
+                       :game-over)
+                   :too-low))
+
+             (> guess (get-in (db/get-user user) [:item :target]))
+             (do (update-counter user)
+                 (if (<= 5 (get-in (db/get-user user) [:item :counter]))
+                   (do (new-game! user)
+                       :game-over)
+                   :too-high)))
+           :unauthorized))))
+ #+end_src
+
+** Things to explain
+ - [ ] The transpilation model
+ - [ ] startup core.cljs, inspect page in browser and look at what scripts got written
+ - [ ] go look at our compiled script in resources/public/cljs-out/dev/hello_world/core.js
+ - [ ] dev builds and production builds
+ - [ ] build the minified version, and go inspect it again.
+ - [ ] the live programming and debugging experience
+ - [ ] how errors are reported.
+ - [ ] reloadable code.
+ - [ ] React and =reagent=
+ - [ ] 10,000 threads! https://swannodette.github.io/2013/08/02/100000-processes/
+ - [ ] Another nice demo: https://programming-enchiladas.destructuring-bind.org/rm-hull/7098992?shape=icosahedron&style=shaded&scale=2
+ - [ ] creating components
+ - [ ] binding events and state management
+ - [ ] AJAX
