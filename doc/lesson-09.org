@@ -3,8 +3,12 @@
 
  - [ ] clojurescript
 
-TODO: rewrite for shadow-cljs
+
 * Preparatory Material for Lesson 9
+
+ - Install node and npm (listed in requirements for shadow-cljs https://github.com/thheller/shadow-cljs)
+
+ - I will show you how to use shadow-cljs, for now try the stuff below which is not exactly what we use but still good for learning
 
  - Create a new clojurescript playground project with the following command:
    #+begin_src shell
