@@ -116,7 +116,7 @@ Newer lesson plans will be added in as lessons are completed.
   - [[file:doc/lesson-06.org::*Lesson%20Goals][Lesson 6]] :: Clojure odds and ends
   - [[file:doc/lesson-07.org::*Lesson%20Goals][Lesson 7]] :: Building a simple HTTP service - Guess the right number!
   - [[file:doc/lesson-08.org::*Lesson%20Goals][Lesson 8]] :: core.async and Postgresql
-  - Lesson 9 :: Clojurescript
+  - [[file:doc/lesson-09.org::*Lesson%20Goals][Lesson 9]] :: Clojurescript
   - Lesson 10 :: Re-Frame
   - Lesson 11 :: The word puzzle (part 1)
   - Lesson 12 :: The word puzzle (part 2)
