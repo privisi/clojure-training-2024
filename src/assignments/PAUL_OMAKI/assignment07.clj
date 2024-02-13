@@ -5,10 +5,10 @@
    [clj-http.client :as client]
    [medley.core :as m]))
 
-(def api-key  (atom "dc4ed82a3799de9ad36253efd38595f21383bc49"))
-(def base-url (atom "https://paul-sandbox5.pipedrive.com/v1/"))
-(def persons-url       (str @base-url "persons"))
-(def organizations-url (str @base-url "organizations"))
+(def api-key "dc4ed82a3799de9ad36253efd38595f21383bc49")
+(def base-url "https://paul-sandbox5.pipedrive.com/v1/")
+(def persons-url       (str base-url "persons"))
+(def organizations-url (str base-url "organizations"))
 (def test-person-params {:name "Test McTesterson"
                          :email "foo@bar.com"
                          :phone "99999999"})
@@ -24,7 +24,7 @@
     (future (-> (client/get
                  url
                  {:as :json
-                  :query-params (merge {:api_token @api-key} params-map)})
+                  :query-params (merge {:api_token api-key} params-map)})
                 (:body)))))
 
 (defn fetch-person
@@ -51,12 +51,14 @@
 (defn post-data
   "Generic upload for data. Applies the hardcoded API token."
   [url & params-map]
-  (-> (client/post
-       url
-       {:as :json
-        :throw-exceptions false
-        :query-params {:api_token @api-key}
-        :form-params  (m/map-keys csk/->snake_case_keyword params-map)})))
+  (let [response (client/post url
+                               {:as :json
+                                :throw-exceptions false
+                                :query-params {:api_token api-key}
+                                :form-params  (m/map-keys csk/->snake_case_keyword params-map)})]
+     (if (= 200 (:status response))
+       (:body response)
+       {:error "Failed to transfer data." :details (:body response)})))
 
 (defn add-person 
   "Creates a new person in the database with the supplied map."
@@ -69,20 +71,25 @@
   (post-data organizations-url params-map))
 
 
+
+(defn output-entity-data
+  "Gets entity data using the API key and outputs a map with their data."
+  [url key value]
+  (let [entity-future (fetch-data url key value)]
+    (-> (deref entity-future 3000 (str "Search for" value "timed out."))
+        :data
+        first)))
+
 (defn output-person-data 
   "Gets a person using the API key and outputs a map with their data."
   [key value]
-  (let [person-future (fetch-person key value)]
-    (-> (deref person-future 3000 (str "Search for" value "timed out.")) 
-        :data
-        first)))
+  (output-entity-data persons-url key value))
 (defn output-org-data
   "Gets an organization using the API key and outputs a map with their data."
   [key value]
-  (let [org-future (fetch-org key value)]
-    (-> (deref org-future 3000 (str "Search for" value "timed out."))
-        :data
-        first)))
+ (output-entity-data organizations-url key value))
+
+
 
 (defn strip-person-data
   "Reduces the full map JSON to just name, phone, email, company, and their deal count."
