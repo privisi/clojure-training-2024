@@ -98,17 +98,17 @@ TODO: rewrite for shadow-cljs
  #+end_src
 
 ** Things to explain
- - [ ] The transpilation model
+ - [X] The transpilation model
  - [ ] startup core.cljs, inspect page in browser and look at what scripts got written
  - [ ] go look at our compiled script in resources/public/cljs-out/dev/hello_world/core.js
  - [ ] dev builds and production builds
  - [ ] build the minified version, and go inspect it again.
- - [ ] the live programming and debugging experience
+ - [X] the live programming and debugging experience
  - [ ] how errors are reported.
- - [ ] reloadable code.
- - [ ] React and =reagent=
- - [ ] 10,000 threads! https://swannodette.github.io/2013/08/02/100000-processes/
- - [ ] Another nice demo: https://programming-enchiladas.destructuring-bind.org/rm-hull/7098992?shape=icosahedron&style=shaded&scale=2
- - [ ] creating components
- - [ ] binding events and state management
- - [ ] AJAX
+ - [X] reloadable code.
+ - [X] React and =reagent=
+ - [X] 10,000 threads! https://swannodette.github.io/2013/08/02/100000-processes/
+ - [X] Another nice demo: https://programming-enchiladas.destructuring-bind.org/rm-hull/7098992?shape=icosahedron&style=shaded&scale=2
+ - [X] creating components
+ - [X] binding events and state management
+ - [X] AJAX

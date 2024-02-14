@@ -116,8 +116,8 @@ Newer lesson plans will be added in as lessons are completed.
   - [[file:doc/lesson-06.org::*Lesson%20Goals][Lesson 6]] :: Clojure odds and ends
   - [[file:doc/lesson-07.org::*Lesson%20Goals][Lesson 7]] :: Building a simple HTTP service - Guess the right number!
   - [[file:doc/lesson-08.org::*Lesson%20Goals][Lesson 8]] :: core.async and Postgresql
-  - Lesson 9 :: Clojurescript
-  - Lesson 10 :: Re-Frame
+  - [[file:doc/lesson-09.org::*Lesson%20Goals][Lesson 9]] :: Clojurescript
+  - [[file:doc/lesson-10.org::*Lesson%20Goals][Lesson 10]] :: Re-Frame
   - Lesson 11 :: The word puzzle (part 1)
   - Lesson 12 :: The word puzzle (part 2)
   - Course summary :: A quick review
@@ -285,7 +285,20 @@ Pull this branch separately, and merge it into your source branch, commit, and r
    instead of futures and promises.  (You'll need to use the =alts!=
    macro).  Compare and contrast the two approaches.
 
+* Lesson 9
 
+ - The final assignment for the training module will be to re-implement
+   the "spelling bee" game of the New York Times, located at https://www.nytimes.com/puzzles/spelling-bee
+   In preparation for this, see if you can design some =reagent= components which:
+   - display a list of words on the screen
+   - keeps these words alphabetically sorted at all times
+   - have an input field where user can type in new words, which
+     should appear, in their proper place, when the user hits the carriage return
+   Add as many bells and whistles to your components as you like.  (fonts, fade ins, fade outs,
+   animations, error checking on repeated words, /etc./  Use your imagination!)
+
+ - Re-implement the "guess the number game", this time in clojurescript.
+   For extra difficulty, obtain the initial game state from a back end server.
 
 
 ## License
