@@ -104,9 +104,9 @@
   (post-data organizations-url params-map))
 
 (defn add-lead
-  "Creates a new organization in the database with the supplied map."
+  "Creates a new lead in the database with the supplied map."
   [params-map]
-  (post-data organizations-url params-map))
+  (post-data leads-url params-map))
 
 
 (defn patch-data
@@ -119,6 +119,21 @@
                    :query-params {:api_token api-key}
                    :form-params  (m/map-keys csk/->snake_case_keyword params-map)})
                  (:body))))))
+
+(defn modify-person
+  "Modifies a person at supplied ID in the database with the supplied map."
+  [id-num params-map]
+  (patch-data persons-url id-num params-map))
+
+(defn modify-org
+  "Modifies a person at supplied ID in the database with the supplied map."
+  [id-num params-map]
+  (patch-data organizations-url id-num params-map))
+
+(defn modify-lead
+  "Modifies a person at supplied ID in the database with the supplied map."
+  [id-num params-map]
+  (patch-data leads-url id-num params-map))
 
 ;;; Removing data
 
@@ -223,4 +238,5 @@
 (strip-all-persons-data)
 (strip-all-organizations-data)
 (strip-all-leads-data)
-()
+(deref (modify-person 6 {:id 7 :name "Jim Egbot"}))
+(deref (modify-person 7 {:id 6 :name "John Egbert"}))
