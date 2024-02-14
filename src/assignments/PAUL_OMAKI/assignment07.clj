@@ -10,13 +10,14 @@
 (def persons-url       (str base-url "persons"))
 (def organizations-url (str base-url "organizations"))
 (def leads-url         (str base-url "leads"))
-(def test-person-params {:name "Test McTesterson"
-                         :email "foo@bar.com"
-                         :phone "99999999"})
+(def test-person-params {:name "John Egbert"
+                         :email "stuck@home.co.nz"
+                         :phone "4134134134"})
 (def test-org-params {:name "Test McTesterson"
                          :email "foo@bar.com"
                          :phone "99999999"})
 
+;;; Getting data
 
 (defn fetch-data
   "Generic request for data. Applies the hardcoded API token."
@@ -52,15 +53,15 @@
 ;;   (fetch-data leads-url key value))
 
 (defn fetch-person-by-id
-  "Creates a future request for a person's data that matches supplied key and value."
+  "Creates a future request for a person's data that matches supplied ID."
   [id-num]
   (fetch-data persons-url id-num))
 (defn fetch-org-by-id
-  "Creates a future request for an organization's data that matches supplied key and value."
+  "Creates a future request for an organization's data that matches supplied ID."
   [id-num]
   (fetch-data organizations-url id-num))
 (defn fetch-lead-by-id
-  "Creates a future request for a lead's data that matches supplied key and value."
+  "Creates a future request for a lead's data that matches supplied ID."
   [id-num]
   (fetch-data leads-url id-num))
 
@@ -77,6 +78,8 @@
   []
   (fetch-data leads-url))
 
+
+;;; Sending new data
 
 (defn post-data
   "Generic upload for data. Applies the hardcoded API token."
@@ -106,6 +109,45 @@
   (post-data organizations-url params-map))
 
 
+(defn patch-data
+  "Request for addition of data. Applies the hardcoded API token."
+  ([url id-num params-map]
+   (let [url-addition (str "/" id-num "/")]
+     (future (-> (client/patch
+                  (str url url-addition) ; 
+                  {:as :json
+                   :query-params {:api_token api-key}
+                   :form-params  (m/map-keys csk/->snake_case_keyword params-map)})
+                 (:body))))))
+
+;;; Removing data
+
+(defn delete-data
+  "Request for deletion of data. Applies the hardcoded API token." 
+  ([url id-num]
+   (let [url-addition (str "/" id-num "/")]
+     (future (-> (client/delete
+                  (str url url-addition) ; 
+                  {:as :json
+                   :query-params {:api_token api-key}})
+                 (:body))))))
+
+(defn delete-person-by-id
+  "Creates a future request for deleting a person's data that matches supplied ID."
+  [id-num]
+  (delete-data persons-url id-num))
+(defn delete-org-by-id
+  "Creates a future request for deleting an organization's data that matches supplied ID."
+  [id-num]
+  (delete-data organizations-url id-num))
+(defn delete-lead-by-id
+  "Creates a future request for deleting a lead's data that matches supplied ID."
+  [id-num]
+  (delete-data leads-url id-num))
+
+
+
+;;; Reading and formatting retrieved data
 
 (defn output-entity-data
   "Gets entity data using the API key and outputs a map with their data."
@@ -170,6 +212,8 @@
 
 
 
+
+
 (deref (fetch-all-persons))
 (add-person test-person-params)
 (output-person-data 2)
@@ -179,3 +223,4 @@
 (strip-all-persons-data)
 (strip-all-organizations-data)
 (strip-all-leads-data)
+()
