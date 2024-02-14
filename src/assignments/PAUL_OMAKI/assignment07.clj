@@ -22,59 +22,56 @@
 (defn fetch-data
   "Generic request for data. Applies the hardcoded API token."
   ([url] ; for getting all info from the request
-   (future (-> (client/get
-                (str url)
-                {:as :json
-                 :query-params {:api_token api-key}})
-               (:body))))
-  ([url id-num] ; Pipedrive doesn't do server-side filtering with query params, rerouting...
-    ;; [url & params]
-    ;; (let [params-map (apply hash-map params)] (
-     (let [url-addition (str "/" id-num "/")]
-       (future (-> (client/get
-                    (str url url-addition) ; 
-                    {:as :json
-                  ;; :query-params (merge {:api_token api-key} params-map)}) 
-                     :query-params {:api_token api-key}})
-                   (:body))))))
+   (-> (client/get url
+                            {:as :json
+                             :query-params {:api_token api-key}})
+                (:body)))
+  ([url id-num] ; Pipedrive doesn't do server-side filtering with query params, so doing it this way 
+       (-> (client/get
+            (format "%s/%s/" url id-num)
+            {:as :json
+             :query-params {:api_token api-key}})
+           (:body))))
 
 
 ;; (defn fetch-person
-;;   "Creates a future request for a person's data that matches supplied key and value."
+;;   "Fetches a person's data that matches supplied key and value."
 ;;   [key value]
 ;;   (fetch-data persons-url key value))
 ;; (defn fetch-org
-;;   "Creates a future request for an organization's data that matches supplied key and value."
+;;   "Fetches an organization's data that matches supplied key and value."
 ;;   [key value]
 ;;   (fetch-data organizations-url key value))
 ;; (defn fetch-lead
-;;   "Creates a future request for a lead's data that matches supplied key and value."
+;;   "Fetches a lead's data that matches supplied key and value."
 ;;   [key value]
 ;;   (fetch-data leads-url key value))
 
+
+
 (defn fetch-person-by-id
-  "Creates a future request for a person's data that matches supplied ID."
+  "Fetches a person's data that matches supplied ID."
   [id-num]
-  (fetch-data persons-url id-num))
+  (get (fetch-data persons-url id-num) :data))
 (defn fetch-org-by-id
-  "Creates a future request for an organization's data that matches supplied ID."
+  "Fetches an organization's data that matches supplied ID."
   [id-num]
-  (fetch-data organizations-url id-num))
+  (get (fetch-data organizations-url id-num) :data))
 (defn fetch-lead-by-id
-  "Creates a future request for a lead's data that matches supplied ID."
+  "Fetches a lead's data that matches supplied ID."
   [id-num]
-  (fetch-data leads-url id-num))
+  (get (fetch-data leads-url id-num) :data))
 
 (defn fetch-all-persons
-  "Creates a future request for all people in the database."
+  "Fetches all people in the database."
   []
   (fetch-data persons-url))
 (defn fetch-all-orgs
-  "Creates a future request for all organizations in the database."
+  "Fetches all organizations in the database."
   []
   (fetch-data organizations-url))
 (defn fetch-all-leads
-  "Creates a future request for all leads in the database."
+  "Fetches all leads in the database."
   []
   (fetch-data leads-url))
 
@@ -112,13 +109,12 @@
 (defn patch-data
   "Request for addition of data. Applies the hardcoded API token."
   ([url id-num params-map]
-   (let [url-addition (str "/" id-num "/")]
-     (future (-> (client/patch
-                  (str url url-addition) ; 
+     (-> (client/patch
+                  (format "%s/%s/" url id-num) ; 
                   {:as :json
                    :query-params {:api_token api-key}
                    :form-params  (m/map-keys csk/->snake_case_keyword params-map)})
-                 (:body))))))
+                 (:body))))
 
 (defn modify-person
   "Modifies a person at supplied ID in the database with the supplied map."
@@ -139,50 +135,29 @@
 
 (defn delete-data
   "Request for deletion of data. Applies the hardcoded API token." 
-  ([url id-num]
-   (let [url-addition (str "/" id-num "/")]
-     (future (-> (client/delete
-                  (str url url-addition) ; 
+  ([url id-num] 
+     (-> (client/delete
+                  (format "%s/%s/" url id-num) ; 
                   {:as :json
                    :query-params {:api_token api-key}})
-                 (:body))))))
+                 (:body))))
 
 (defn delete-person-by-id
-  "Creates a future request for deleting a person's data that matches supplied ID."
+  "Creates a request for deleting a person's data that matches supplied ID."
   [id-num]
   (delete-data persons-url id-num))
 (defn delete-org-by-id
-  "Creates a future request for deleting an organization's data that matches supplied ID."
+  "Creates a request for deleting an organization's data that matches supplied ID."
   [id-num]
   (delete-data organizations-url id-num))
 (defn delete-lead-by-id
-  "Creates a future request for deleting a lead's data that matches supplied ID."
+  "Creates a request for deleting a lead's data that matches supplied ID."
   [id-num]
   (delete-data leads-url id-num))
 
 
 
 ;;; Reading and formatting retrieved data
-
-(defn output-entity-data
-  "Gets entity data using the API key and outputs a map with their data."
-  [url id-num]
-  (let [entity-future (fetch-data url id-num)]
-    (-> (deref entity-future 3000 (str "Search for ID " id-num " timed out."))
-        :data)))
-
-(defn output-person-data 
-  "Gets a person using the API key and outputs a map with their data."
-  [id-num]
-  (output-entity-data persons-url id-num))
-(defn output-org-data
-  "Gets an organization using the API key and outputs a map with their data."
-  [id-num]
- (output-entity-data organizations-url id-num))
-(defn output-lead-data
-  "Gets a person using the API key and outputs a map with their data."
-  [id-num]
-  (output-entity-data leads-url id-num))
 
 
 (defn strip-person-data
@@ -197,7 +172,7 @@
      :company   org-name
      :deals     (:closed_deals_count person)}))
 (defn strip-all-persons-data []
-  (map strip-person-data (get (deref (fetch-all-persons)) :data)))
+  (map strip-person-data (get (fetch-all-persons) :data)))
 
 (defn strip-org-data
   "Reduces the full map JSON to just name, address, postal code, country, and related deals."
@@ -205,38 +180,38 @@
   {:id                   (:id                 org)
    :name                 (:name               org)
    :address              (:address            org)
-   :address_postal_code (:address_postal_code org)
-   :address_country      (:address_country    org)
+   :postal-code          (:address_postal_code org)
+   :country              (:address_country    org)
    :deals                (:closed_deals_count org)})
 (defn strip-all-organizations-data []
-  (map strip-org-data (get (deref (fetch-all-orgs)) :data)))
+  (map strip-org-data (get (fetch-all-orgs) :data)))
 
 (defn strip-lead-data
   "Reduces the full map JSON to just name, phone, email, company, and their deal count."
   [lead]
   (let [deal-amount (get-in lead [:value :amount])
         deal-currency (get-in lead [:value :currency])]
-  {:organization_id      (:organization_id      lead)
+  {:organization-id      (:organization_id      lead)
    :title                (:title               lead)
    :amount               deal-amount
    :currency             deal-currency
-   :expected_close_date  (:expected_close_date lead)
-   :contact              (get (deref (fetch-person-by-id (get lead :person_id))) :name)}))
+   :expected-close-date  (:expected_close_date lead)
+   :contact              (get (fetch-person-by-id (get lead :person_id)) :name)}))
 (defn strip-all-leads-data []
-  (map strip-lead-data (get (deref (fetch-all-leads)) :data)))
+  (map strip-lead-data (get (fetch-all-leads) :data)))
 
 
 
 
 
-(deref (fetch-all-persons))
+(fetch-all-persons)
 (add-person test-person-params)
-(output-person-data 2)
-(strip-person-data (output-person-data 3))
-(output-org-data 1)
-(strip-org-data (output-org-data 2))
+(fetch-person-by-id 2)
+(strip-person-data (fetch-person-by-id 3))
+(fetch-org-by-id 1)
+(strip-org-data (fetch-org-by-id 2))
 (strip-all-persons-data)
 (strip-all-organizations-data)
 (strip-all-leads-data)
-(deref (modify-person 6 {:id 7 :name "Jim Egbot"}))
-(deref (modify-person 7 {:id 6 :name "John Egbert"}))
+(modify-person 6 {:id 7 :name "Jim Egbot"})
+(modify-person 7 {:id 6 :name "John Egbert"})
