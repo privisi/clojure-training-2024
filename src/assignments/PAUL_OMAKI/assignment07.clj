@@ -14,8 +14,8 @@
                          :email "stuck@home.co.nz"
                          :phone "4134134134"})
 (def test-org-params {:name "Test McTesterson"
-                         :email "foo@bar.com"
-                         :phone "99999999"})
+                      :email "foo@bar.com"
+                      :phone "99999999"})
 
 ;;; Getting data
 
@@ -23,15 +23,14 @@
   "Generic request for data. Applies the hardcoded API token."
   ([url] ; for getting all info from the request
    (-> (client/get url
-                            {:as :json
-                             :query-params {:api_token api-key}})
-                (:body)))
+                   {:as :json
+                    :query-params {:api_token api-key}})
+       (:body)))
   ([url id-num] ; Pipedrive doesn't do server-side filtering with query params, so doing it this way 
-       (-> (client/get
-            (format "%s/%s/" url id-num)
-            {:as :json
-             :query-params {:api_token api-key}})
-           (:body))))
+   (-> (client/get (format "%s/%s/" url id-num)
+                   {:as :json
+                    :query-params {:api_token api-key}})
+       (:body))))
 
 
 ;; (defn fetch-person
@@ -65,15 +64,15 @@
 (defn fetch-all-persons
   "Fetches all people in the database."
   []
-  (fetch-data persons-url))
+  (get (fetch-data persons-url) :data))
 (defn fetch-all-orgs
   "Fetches all organizations in the database."
   []
-  (fetch-data organizations-url))
+  (get (fetch-data organizations-url) :data))
 (defn fetch-all-leads
   "Fetches all leads in the database."
   []
-  (fetch-data leads-url))
+  (get (fetch-data leads-url) :data))
 
 
 ;;; Sending new data
@@ -82,15 +81,15 @@
   "Generic upload for data. Applies the hardcoded API token."
   [url params-map]
   (let [response (client/post url
-                               {:as :json
-                                :throw-exceptions false
-                                :query-params {:api_token api-key}
-                                :form-params  (m/map-keys csk/->snake_case_keyword params-map)})]
-     (if (= 200 (:status response))
-       (:body response)
-       {:error "Failed to transfer data." :details (:body response)})))
+                              {:as :json
+                               :throw-exceptions false
+                               :query-params {:api_token api-key}
+                               :form-params  (m/map-keys csk/->snake_case_keyword params-map)})]
+    (if (= 200 (:status response))
+      (:body response)
+      {:error "Failed to transfer data." :details (:body response)})))
 
-(defn add-person 
+(defn add-person
   "Creates a new person in the database with the supplied map."
   [params-map]
   (post-data persons-url params-map))
@@ -109,12 +108,11 @@
 (defn patch-data
   "Request for addition of data. Applies the hardcoded API token."
   ([url id-num params-map]
-     (-> (client/patch
-                  (format "%s/%s/" url id-num) ; 
-                  {:as :json
-                   :query-params {:api_token api-key}
-                   :form-params  (m/map-keys csk/->snake_case_keyword params-map)})
-                 (:body))))
+   (-> (client/patch (format "%s/%s/" url id-num) ; 
+                     {:as :json
+                      :query-params {:api_token api-key}
+                      :form-params  (m/map-keys csk/->snake_case_keyword params-map)})
+       (:body))))
 
 (defn modify-person
   "Modifies a person at supplied ID in the database with the supplied map."
@@ -134,13 +132,12 @@
 ;;; Removing data
 
 (defn delete-data
-  "Request for deletion of data. Applies the hardcoded API token." 
-  ([url id-num] 
-     (-> (client/delete
-                  (format "%s/%s/" url id-num) ; 
-                  {:as :json
-                   :query-params {:api_token api-key}})
-                 (:body))))
+  "Request for deletion of data. Applies the hardcoded API token."
+  ([url id-num]
+   (-> (client/delete (format "%s/%s/" url id-num)
+                      {:as :json
+                       :query-params {:api_token api-key}})
+       (:body))))
 
 (defn delete-person-by-id
   "Creates a request for deleting a person's data that matches supplied ID."
@@ -172,11 +169,11 @@
      :company   org-name
      :deals     (:closed_deals_count person)}))
 (defn strip-all-persons-data []
-  (map strip-person-data (get (fetch-all-persons) :data)))
+  (map strip-person-data (fetch-all-persons)))
 
 (defn strip-org-data
   "Reduces the full map JSON to just name, address, postal code, country, and related deals."
-  [org] 
+  [org]
   {:id                   (:id                 org)
    :name                 (:name               org)
    :address              (:address            org)
@@ -184,21 +181,21 @@
    :country              (:address_country    org)
    :deals                (:closed_deals_count org)})
 (defn strip-all-organizations-data []
-  (map strip-org-data (get (fetch-all-orgs) :data)))
+  (map strip-org-data (fetch-all-orgs)))
 
 (defn strip-lead-data
   "Reduces the full map JSON to just name, phone, email, company, and their deal count."
   [lead]
   (let [deal-amount (get-in lead [:value :amount])
         deal-currency (get-in lead [:value :currency])]
-  {:organization-id      (:organization_id      lead)
-   :title                (:title               lead)
-   :amount               deal-amount
-   :currency             deal-currency
-   :expected-close-date  (:expected_close_date lead)
-   :contact              (get (fetch-person-by-id (get lead :person_id)) :name)}))
+    {:organization-id      (:organization_id      lead)
+     :title                (:title               lead)
+     :amount               deal-amount
+     :currency             deal-currency
+     :expected-close-date  (:expected_close_date lead)
+     :contact              (get (fetch-person-by-id (get lead :person_id)) :name)}))
 (defn strip-all-leads-data []
-  (map strip-lead-data (get (fetch-all-leads) :data)))
+  (map strip-lead-data (fetch-all-leads)))
 
 
 
