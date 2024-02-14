@@ -20,39 +20,58 @@
 
 (defn fetch-data
   "Generic request for data. Applies the hardcoded API token."
-  [url & params]
-  (let [params-map (apply hash-map params)]
-    (future (-> (client/get
-                 url
-                 {:as :json
-                  :query-params (merge {:api_token api-key} params-map)})
-                (:body)))))
+  ([url] ; for getting all info from the request
+   (future (-> (client/get
+                (str url)
+                {:as :json
+                 :query-params {:api_token api-key}})
+               (:body))))
+  ([url id-num] ; Pipedrive doesn't do server-side filtering with query params, rerouting...
+    ;; [url & params]
+    ;; (let [params-map (apply hash-map params)] (
+     (let [url-addition (str "/" id-num "/")]
+       (future (-> (client/get
+                    (str url url-addition) ; 
+                    {:as :json
+                  ;; :query-params (merge {:api_token api-key} params-map)}) 
+                     :query-params {:api_token api-key}})
+                   (:body))))))
 
-(defn fetch-person
+
+;; (defn fetch-person
+;;   "Creates a future request for a person's data that matches supplied key and value."
+;;   [key value]
+;;   (fetch-data persons-url key value))
+;; (defn fetch-org
+;;   "Creates a future request for an organization's data that matches supplied key and value."
+;;   [key value]
+;;   (fetch-data organizations-url key value))
+;; (defn fetch-lead
+;;   "Creates a future request for a lead's data that matches supplied key and value."
+;;   [key value]
+;;   (fetch-data leads-url key value))
+
+(defn fetch-person-by-id
   "Creates a future request for a person's data that matches supplied key and value."
-  [key value]
-  (fetch-data persons-url key value))
+  [id-num]
+  (fetch-data persons-url id-num))
+(defn fetch-org-by-id
+  "Creates a future request for an organization's data that matches supplied key and value."
+  [id-num]
+  (fetch-data organizations-url id-num))
+(defn fetch-lead-by-id
+  "Creates a future request for a lead's data that matches supplied key and value."
+  [id-num]
+  (fetch-data leads-url id-num))
 
 (defn fetch-all-persons
   "Creates a future request for all people in the database."
   []
   (fetch-data persons-url))
-
-(defn fetch-org
-  "Creates a future request for an organization's data that matches supplied key and value."
-  [key value]
-  (fetch-data organizations-url key value))
-
 (defn fetch-all-orgs
   "Creates a future request for all organizations in the database."
   []
   (fetch-data organizations-url))
-
-(defn fetch-lead
-  "Creates a future request for a lead's data that matches supplied key and value."
-  [key value]
-  (fetch-data leads-url key value))
-
 (defn fetch-all-leads
   "Creates a future request for all leads in the database."
   []
@@ -90,24 +109,23 @@
 
 (defn output-entity-data
   "Gets entity data using the API key and outputs a map with their data."
-  [url key value]
-  (let [entity-future (fetch-data url key value)]
-    (-> (deref entity-future 3000 (str "Search for" value "timed out."))
-        :data
-        first)))
+  [url id-num]
+  (let [entity-future (fetch-data url id-num)]
+    (-> (deref entity-future 3000 (str "Search for ID " id-num " timed out."))
+        :data)))
 
 (defn output-person-data 
   "Gets a person using the API key and outputs a map with their data."
-  [key value]
-  (output-entity-data persons-url key value))
+  [id-num]
+  (output-entity-data persons-url id-num))
 (defn output-org-data
   "Gets an organization using the API key and outputs a map with their data."
-  [key value]
- (output-entity-data organizations-url key value))
+  [id-num]
+ (output-entity-data organizations-url id-num))
 (defn output-lead-data
   "Gets a person using the API key and outputs a map with their data."
-  [key value]
-  (output-entity-data leads-url key value))
+  [id-num]
+  (output-entity-data leads-url id-num))
 
 
 (defn strip-person-data
@@ -146,15 +164,18 @@
    :amount               deal-amount
    :currency             deal-currency
    :expected_close_date  (:expected_close_date lead)
-   :contact              (get (deref (fetch-person :id (get lead :person_id))) :name)}))
-(defn strip-all-organizations-data []
-  (map strip-org-data (get (deref (fetch-all-orgs)) :data)))
+   :contact              (get (deref (fetch-person-by-id (get lead :person_id))) :name)}))
+(defn strip-all-leads-data []
+  (map strip-lead-data (get (deref (fetch-all-leads)) :data)))
 
 
 
-(fetch-all-persons)
+(deref (fetch-all-persons))
 (add-person test-person-params)
-(output-person-data :name "Test McTesterson")
-(strip-person-data (output-person-data :name "Test McTesterson"))
-(output-org-data :name "Test Org")
-(strip-org-data (output-org-data :name "Test Org"))
+(output-person-data 2)
+(strip-person-data (output-person-data 3))
+(output-org-data 1)
+(strip-org-data (output-org-data 2))
+(strip-all-persons-data)
+(strip-all-organizations-data)
+(strip-all-leads-data)
